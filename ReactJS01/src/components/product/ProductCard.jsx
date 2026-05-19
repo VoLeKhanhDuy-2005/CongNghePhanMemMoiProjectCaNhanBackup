@@ -1,6 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { StarFilled } from "@ant-design/icons";
+import { StarFilled, EyeOutlined } from "@ant-design/icons";
 
 /**
  * ProductCard — Thẻ hiển thị sản phẩm
@@ -14,6 +13,7 @@ import { StarFilled } from "@ant-design/icons";
  *   badge        - Chuỗi label nổi bật (VD: "Hot", "New", "Sale")
  *   rating       - Điểm đánh giá (số từ 0–5)
  *   sold         - Số lượng đã bán
+ *   views        - Số lượt xem
  */
 export default function ProductCard({
   id,
@@ -24,6 +24,7 @@ export default function ProductCard({
   badge,
   rating,
   sold,
+  views,
 }) {
   // Xác định màu badge (Hot = đỏ-cam, còn lại = xanh lá)
   const isHot = badge?.toLowerCase().includes("hot");
@@ -79,12 +80,17 @@ export default function ProductCard({
         </h4>
 
         <div className="flex items-center justify-between mt-auto">
-          <div className="flex items-center gap-1 text-yellow-500 text-xs font-semibold">
+          <div className="flex items-center flex-wrap gap-1 text-yellow-500 text-xs font-semibold">
             <StarFilled />
             <span className="text-gray-700">{rating || "-"}</span>
             {sold != null && (
               <span className="text-gray-400 font-normal ml-1">
                 ({sold} đã bán)
+              </span>
+            )}
+            {views != null && (
+              <span className="text-gray-400 font-normal ml-1" title="Lượt xem">
+                <EyeOutlined /> {views}
               </span>
             )}
           </div>

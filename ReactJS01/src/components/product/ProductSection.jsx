@@ -3,9 +3,13 @@ import ProductCard from "./ProductCard";
 export default function ProductSection({
   smallHeader,
   bigHeader,
-  buttonText,
   productData,
 }) {
+  const formatPrice = (price) =>
+    new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
   return (
     <>
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
@@ -16,12 +20,6 @@ export default function ProductSection({
               {bigHeader}
             </h3>
           </div>
-          <Link
-            to="/search"
-            className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-4 py-2 rounded-xl transition-colors"
-          >
-            {buttonText} <ArrowRightOutlined />
-          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -34,9 +32,10 @@ export default function ProductSection({
                 price={formatPrice(item.price)}
                 image={item.images[0]}
                 categoryName={item.categoryName}
-                badge="New"
+                badge={item.isHot ? "Hot 🔥" : item.isNew ? "New" : null}
                 rating={item.rating}
                 sold={item.sold}
+                views={item.views}
               />
             ))
           ) : (

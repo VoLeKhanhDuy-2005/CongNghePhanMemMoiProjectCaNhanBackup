@@ -281,6 +281,12 @@ export default function ProductDetailPage() {
                     {inStock ? `${product.stock} phần` : "Tạm hết"}
                   </span>
                 </div>
+                <div className="text-gray-500">
+                  Lượt xem:{" "}
+                  <span className="font-bold text-gray-800">
+                    {product.views}
+                  </span>
+                </div>
               </div>
 
               <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-6 rounded-2xl mb-6 border border-orange-100">
@@ -357,6 +363,7 @@ export default function ProductDetailPage() {
                   categoryName={item.categoryName}
                   rating={item.rating}
                   sold={item.sold}
+                  views={item.views}
                 />
               ))}
             </div>

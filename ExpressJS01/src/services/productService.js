@@ -69,7 +69,11 @@ const getProductsWithFilters = async (query) => {
 };
 
 const getProductById = async (id) => {
-  const product = await Product.findById(id);
+  const product = await Product.findByIdAndUpdate(
+    id,
+    { $inc: { views: 1 } },
+    { new: true }// Trả về dữ liệu mới nhất sau khi tăng
+  );
   if (!product) throw new Error("Sản phẩm không tồn tại");
   return product;
 };

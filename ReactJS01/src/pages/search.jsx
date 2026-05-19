@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Input, Spin, Empty, Radio, Divider } from "antd";
-import { FilterOutlined, StarFilled } from "@ant-design/icons";
+import { Input, Spin, Empty, Radio, Divider, Pagination } from "antd";
+import { FilterOutlined } from "@ant-design/icons";
 import ProductCard from "../components/product/ProductCard";
 import axios from "../util/axios.customize";
 import { foodCategories } from "../util/constants";
@@ -19,6 +19,12 @@ export default function SearchFilterPage() {
   const [priceRange, setPriceRange] = useState(
     searchParams.get("price") || "all",
   );
+
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get("page")) || 1,
+  );
+  const [totalItems, setTotalItems] = useState(0);
+  const pageSize = 12;
 
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Bắt đầu là true để load ngay khi vào trang
@@ -41,6 +47,7 @@ export default function SearchFilterPage() {
         if (category !== "all") params.category = category;
         if (minPrice) params.minPrice = minPrice;
         if (maxPrice) params.maxPrice = maxPrice;
+        params.page = currentPage;
 
         const res = await axios.get("/v1/api/products/search", { params });
         if (res && res.data) {
@@ -52,6 +59,7 @@ export default function SearchFilterPage() {
                 p.category,
             }));
           setResults(mapCategoryName(res.data.products || []));
+          setTotalItems(res.data.total || 0);
         }
       } catch (err) {
         console.error("Lỗi tìm kiếm:", err);
@@ -60,29 +68,35 @@ export default function SearchFilterPage() {
       }
     };
     fetchResults();
-  }, [query, category, priceRange]);
+  }, [query, category, priceRange, currentPage]);
 
   // Cập nhật query + URL khi gõ tìm kiếm
   const handleSearch = (value) => {
     setQuery(value);
+    setCurrentPage(1);
     const params = new URLSearchParams(searchParams);
     value ? params.set("q", value) : params.delete("q");
+    params.set("page", 1);
     setSearchParams(params);
   };
 
   // Cập nhật bộ lọc danh mục + URL
   const handleCategoryChange = (value) => {
     setCategory(value);
+    setCurrentPage(1);
     const params = new URLSearchParams(searchParams);
     value !== "all" ? params.set("category", value) : params.delete("category");
+    params.set("page", 1);
     setSearchParams(params);
   };
 
   // Cập nhật bộ lọc giá + URL
   const handlePriceChange = (value) => {
     setPriceRange(value);
+    setCurrentPage(1);
     const params = new URLSearchParams(searchParams);
     value !== "all" ? params.set("price", value) : params.delete("price");
+    params.set("page", 1);
     setSearchParams(params);
   };
 
@@ -90,7 +104,17 @@ export default function SearchFilterPage() {
     setQuery("");
     setCategory("all");
     setPriceRange("all");
-    setSearchParams({});
+    setCurrentPage(1);
+    const params = new URLSearchParams();
+    setSearchParams(params);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page);
+    setSearchParams(params);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const formatPrice = (price) =>
@@ -113,13 +137,12 @@ export default function SearchFilterPage() {
           </p>
         </div>
         <div className="max-w-xl mx-auto">
-          <Search
+          <Input
             placeholder="Hôm nay bạn muốn ăn gì?..."
             allowClear
-            enterButton="Tìm ngay"
             size="large"
-            onSearch={handleSearch}
-            defaultValue={query}
+            onChange={(e) => handleSearch(e.target.value)}
+            value={query}
             className="rounded-2xl overflow-hidden shadow-lg"
           />
         </div>
@@ -219,7 +242,7 @@ export default function SearchFilterPage() {
             <p className="text-gray-700 font-semibold text-sm">
               Tìm thấy{" "}
               <span className="text-orange-600 font-black text-base">
-                {results.length}
+                {totalItems}
               </span>{" "}
               món ăn
               {query && <span className="text-gray-400"> cho "{query}"</span>}
@@ -243,20 +266,36 @@ export default function SearchFilterPage() {
               </p>
             </div>
           ) : results.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {results.map((item) => (
-                <ProductCard
-                  key={item._id}
-                  id={item._id}
-                  name={item.name}
-                  price={formatPrice(item.price)}
-                  image={item.images[0]}
-                  categoryName={item.categoryName}
-                  badge={item.isHot ? "Hot 🔥" : item.isNew ? "New" : null}
-                  rating={item.rating}
-                  sold={item.sold}
-                />
-              ))}
+            <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {results.map((item) => (
+                  <ProductCard
+                    key={item._id}
+                    id={item._id}
+                    name={item.name}
+                    price={formatPrice(item.price)}
+                    image={item.images[0]}
+                    categoryName={item.categoryName}
+                    badge={item.isHot ? "Hot 🔥" : item.isNew ? "New" : null}
+                    rating={item.rating}
+                    sold={item.sold}
+                    views={item.views}
+                  />
+                ))}
+              </div>
+
+              {totalItems > pageSize && (
+                <div className="mt-10 mb-6 flex justify-center">
+                  <Pagination
+                    current={currentPage}
+                    total={totalItems}
+                    pageSize={pageSize}
+                    onChange={handlePageChange}
+                    showSizeChanger={false}
+                    className="custom-pagination"
+                  />
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-100">

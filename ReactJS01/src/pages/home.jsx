@@ -170,6 +170,7 @@ export default function Home() {
                       badge="Sale"
                       rating={item.rating}
                       sold={item.sold}
+                      views={item.views}
                     />
                   </SwiperSlide>
                 ))}
@@ -208,144 +209,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. MÓN MỚI NHẤT*/}
-      {/* <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <p className="section-label text-orange-500 mb-1">Vừa ra lò</p>
-            <h3 className="text-2xl sm:text-3xl font-black text-gray-900">
-              Khám Phá Món Mới ✨
-            </h3>
-          </div>
-          <Link
-            to="/search"
-            className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-4 py-2 rounded-xl transition-colors"
-          >
-            Xem tất cả <ArrowRightOutlined />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.newest.length > 0 ? (
-            products.newest.map((item) => (
-              <ProductCard
-                key={item._id}
-                id={item._id}
-                name={item.name}
-                price={formatPrice(item.price)}
-                image={item.images[0]}
-                categoryName={item.categoryName}
-                badge="New"
-                rating={item.rating}
-                sold={item.sold}
-              />
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-400 py-10 bg-white rounded-2xl border border-dashed">
-              Chưa có món mới.
-            </p>
-          )}
-        </div>
-      </section> */}
-
       <ProductSection
         smallHeader={"Vừa ra lò"}
         bigHeader={"Khám Phá Món Mới ✨"}
-        buttonText={"Xem tất cả"}
         productData={products.newest}
       />
 
-      {/*4. BÁN CHẠY NHẤT*/}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
-        <div className="flex items-end justify-between mb-8">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="section-label text-red-500 mb-1">
-                Được yêu thích nhất
-              </p>
-              <h3 className="text-2xl sm:text-3xl font-black text-gray-900">
-                Bán Chạy Nhất 🏆
-              </h3>
-            </div>
-            <Link
-              to="/search"
-              className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-orange-600 hover:text-orange-700 bg-white hover:bg-orange-50 px-4 py-2 rounded-xl transition-colors border border-orange-100"
-            >
-              Xem tất cả <ArrowRightOutlined />
-            </Link>
-          </div>
-        </div>
+      <ProductSection
+        smallHeader={"Được yêu thích nhất"}
+        bigHeader={"Bán Chạy Nhất 🏆"}
+        productData={products.bestSelling}
+      />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.bestSelling.length > 0 ? (
-            products.bestSelling.map((item) => (
-              <ProductCard
-                key={item._id}
-                id={item._id}
-                name={item.name}
-                price={formatPrice(item.price)}
-                image={item.images[0]}
-                categoryName={item.categoryName}
-                badge="Hot"
-                rating={item.rating}
-                sold={item.sold}
-              />
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-400 py-10 bg-white rounded-2xl border border-dashed">
-              Đang cập nhật...
-            </p>
-          )}
-        </div>
-      </section>
-
-      {/*5. XEM NHIỀU NHẤT*/}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 mb-8 border-y border-indigo-100">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="section-label text-blue-500 mb-1">
-                Thu hút sự chú ý
-              </p>
-              <h3 className="text-2xl sm:text-3xl font-black text-gray-900">
-                Xem Nhiều Nhất 👀
-              </h3>
-            </div>
-            {/* <Link
-              to="/search"
-              className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-700 bg-white hover:bg-indigo-50 px-4 py-2 rounded-xl transition-colors border border-indigo-100"
-            > */}
-            <Link
-              to="/search"
-              className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-4 py-2 rounded-xl transition-colors"
-            >
-              Xem tất cả <ArrowRightOutlined />
-            </Link>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.mostViewed.length > 0 ? (
-            products.mostViewed.map((item) => (
-              <ProductCard
-                key={item._id}
-                id={item._id}
-                name={item.name}
-                price={formatPrice(item.price)}
-                image={item.images[0]}
-                categoryName={item.categoryName}
-                badge="Trending"
-                rating={item.rating}
-                sold={item.sold}
-              />
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-400 py-10 bg-white rounded-2xl border border-dashed">
-              Đang cập nhật...
-            </p>
-          )}
-        </div>
-      </section>
+      <ProductSection
+        smallHeader={"Xu hướng quan tâm"}
+        bigHeader={"Xem Nhiều Nhất 👀"}
+        productData={products.mostViewed}
+      />
     </div>
   );
 }
