@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { AuthContext } from "../components/context/auth.context";
 import ProductCard from "../components/product/ProductCard";
-import ProductSection from "../components/product/ProductSection"
+import ProductSection from "../components/product/ProductSection";
 import axios from "../util/axios.customize";
 import { foodCategories } from "../util/constants";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -213,18 +213,29 @@ export default function Home() {
         smallHeader={"Vừa ra lò"}
         bigHeader={"Khám Phá Món Mới ✨"}
         productData={products.newest}
+        badge={"New"}
       />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-gray-300 my-10"></div>
+      </div>
 
       <ProductSection
         smallHeader={"Được yêu thích nhất"}
         bigHeader={"Bán Chạy Nhất 🏆"}
         productData={products.bestSelling}
+        badge={"Hot"}
       />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-gray-300 my-10"></div>
+      </div>
 
       <ProductSection
         smallHeader={"Xu hướng quan tâm"}
         bigHeader={"Xem Nhiều Nhất 👀"}
         productData={products.mostViewed}
+        badge={"Trending"}
       />
     </div>
   );

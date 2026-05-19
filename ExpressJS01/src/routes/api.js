@@ -10,6 +10,7 @@ const {
   searchProducts,
   getHomePageProducts,
   getProductDetail,
+  incrementView,
 } = require("../controllers/productController");
 const auth = require("../middleware/auth");
 const delay = require("../middleware/delay");
@@ -32,5 +33,6 @@ routerAPI.get("/account", delay, getAccount);
 routerAPI.get("/products", getHomePageProducts);
 routerAPI.get("/products/search", searchProducts);
 routerAPI.get("/products/:id", getProductDetail);
+routerAPI.patch("/products/:id/view", incrementView);
 
 module.exports = routerAPI;

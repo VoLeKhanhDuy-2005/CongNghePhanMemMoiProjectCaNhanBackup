@@ -197,9 +197,6 @@ const seedData = async () => {
           stock: randomInt(10, 100),
           sold: randomInt(0, 500),
           rating: rating,
-          isHot: Math.random() > 0.7,
-          isNew: Math.random() > 0.7,
-          promotion: Math.random() > 0.8 ? "Tặng kèm ly nước" : "",
         });
       }
     }

@@ -10,6 +10,7 @@ const productSchema = new mongoose.Schema(
     slug: {
       type: String,
       lowercase: true,
+      index: true, // Index slug để tìm kiếm theo URL nhanh hơn
     },
     description: {
       type: String,
@@ -18,11 +19,12 @@ const productSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: [true, "Giá sản phẩm không được để trống"],
-      min: 0,
+      min: [0, "Giá không được âm"],
     },
     discountPrice: {
-      type: Number, // Giá sau khi giảm
+      type: Number,
       default: 0,
+      min: [0, "Giá sau giảm không được âm"],
     },
     images: [
       {
@@ -32,45 +34,58 @@ const productSchema = new mongoose.Schema(
     ],
     category: {
       type: String,
-      required: true,
-      index: true, // Đánh index để lọc dữ liệu nhanh hơn
+      required: [true, "Danh mục không được để trống"],
+      index: true, // Index để lọc theo danh mục nhanh hơn
     },
     stock: {
       type: Number,
       required: true,
-      default: 0, // Hàng tồn kho
+      default: 0,
+      min: [0, "Tồn kho không được âm"],
     },
     sold: {
       type: Number,
-      default: 0, // Số lượng đã bán được
+      default: 0,
+      min: [0, "Số lượng đã bán không được âm"],
     },
     rating: {
       type: Number,
+      default: 0,
+      min: [0, "Rating tối thiểu là 0"],
+      max: [5, "Rating tối đa là 5"],
     },
     views: {
       type: Number,
       default: 0,
-    },
-    isHot: {
-      type: Boolean,
-      default: false, // Đánh dấu sản phẩm bán chạy
-    },
-    isNew: {
-      type: Boolean,
-      default: true, // Đánh dấu sản phẩm mới
-    },
-    promotion: {
-      type: String, // Thông tin khuyến mãi đi kèm (ví dụ: "Mua 1 tặng 1")
-      default: "",
+      min: [0, "Lượt xem không được âm"],
     },
   },
   {
-    timestamps: true, // Tự động tạo createdAt và updatedAt
+    timestamps: true,
   },
 );
 
-// Tạo index để hỗ trợ tìm kiếm nhanh theo tên
+// Text index để hỗ trợ full-text search theo tên
 productSchema.index({ name: "text" });
+
+// Compound index để tăng tốc truy vấn bán chạy và xem nhiều nhất
+productSchema.index({ sold: -1 });
+productSchema.index({ views: -1 });
+
+// Tự động tạo slug từ name nếu chưa có
+productSchema.pre("save", function (next) {
+  if (this.isModified("name") || !this.slug) {
+    this.slug = this.name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+  }
+  next();
+});
 
 const Product = mongoose.model("product", productSchema);
 

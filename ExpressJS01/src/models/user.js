@@ -1,12 +1,39 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    password: String,
-    role: String,
-});
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Tên không được để trống"],
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Email không được để trống"],
+      unique: true,
+      trim: true,
+      lowercase: true,
+      match: [/^\S+@\S+\.\S+$/, "Email không hợp lệ"],
+    },
+    password: {
+      type: String,
+      required: [true, "Mật khẩu không được để trống"],
+      minlength: [6, "Mật khẩu phải có ít nhất 6 ký tự"],
+    },
+    role: {
+      type: String,
+      enum: {
+        values: ["user", "admin"],
+        message: "Vai trò không hợp lệ: {VALUE}",
+      },
+      default: "user",
+    },
+  },
+  {
+    timestamps: true, // Tự động tạo createdAt và updatedAt
+  },
+);
 
-const User = mongoose.model('user', userSchema);
+const User = mongoose.model("user", userSchema);
 
 module.exports = User;

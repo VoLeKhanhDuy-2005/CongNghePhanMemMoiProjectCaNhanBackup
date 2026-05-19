@@ -30,7 +30,7 @@ export default function ProductCard({
   const isHot = badge?.toLowerCase().includes("hot");
 
   return (
-    <div className="food-card relative flex flex-col overflow-hidden group bg-white">
+    <div className="food-card relative flex flex-col overflow-hidden group bg-white h-full w-full">
       {/* Badge nổi ở góc trên phải */}
       {badge && (
         <span
@@ -75,7 +75,7 @@ export default function ProductCard({
           </span>
         )}
 
-        <h4 className="font-bold text-gray-900 text-[15px] leading-snug line-clamp-2 min-h-[42px] mb-3 hover:text-orange-600 transition-colors">
+        <h4 className="font-bold text-gray-900 text-[15px] leading-snug line-clamp-2 h-[48px] mb-3 hover:text-orange-600 transition-colors">
           <Link to={`/product/${id}`}>{name}</Link>
         </h4>
 
@@ -83,11 +83,6 @@ export default function ProductCard({
           <div className="flex items-center flex-wrap gap-1 text-yellow-500 text-xs font-semibold">
             <StarFilled />
             <span className="text-gray-700">{rating || "-"}</span>
-            {sold != null && (
-              <span className="text-gray-400 font-normal ml-1">
-                ({sold} đã bán)
-              </span>
-            )}
             {views != null && (
               <span className="text-gray-400 font-normal ml-1" title="Lượt xem">
                 <EyeOutlined /> {views}

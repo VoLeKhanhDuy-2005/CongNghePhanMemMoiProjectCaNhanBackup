@@ -4,12 +4,15 @@ const categorySchema = new mongoose.Schema(
   {
     categoryId: {
       type: String,
-      required: true,
+      required: [true, "Mã danh mục không được để trống"],
       unique: true,
+      trim: true,
+      lowercase: true,
     },
     name: {
       type: String,
-      required: true,
+      required: [true, "Tên danh mục không được để trống"],
+      trim: true,
     },
   },
   {

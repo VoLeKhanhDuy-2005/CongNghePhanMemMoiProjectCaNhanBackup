@@ -8,7 +8,7 @@ const getHomePageProducts = async () => {
     mostViewedProducts,
   ] = await Promise.all([
     Product.find().sort({ createdAt: -1 }).limit(10),
-    Product.find({ isHot: true }).sort({ sold: -1 }).limit(10),
+    Product.find().sort({ sold: -1 }).limit(10),
     Product.find({ discountPrice: { $gt: 0 } }).limit(12),
     Product.find().sort({ views: -1 }).limit(10),
   ]);
@@ -69,10 +69,16 @@ const getProductsWithFilters = async (query) => {
 };
 
 const getProductById = async (id) => {
+  const product = await Product.findById(id);
+  if (!product) throw new Error("Sản phẩm không tồn tại");
+  return product;
+};
+
+const incrementProductView = async (id) => {
   const product = await Product.findByIdAndUpdate(
     id,
     { $inc: { views: 1 } },
-    { new: true }// Trả về dữ liệu mới nhất sau khi tăng
+    { new: true },
   );
   if (!product) throw new Error("Sản phẩm không tồn tại");
   return product;
@@ -86,5 +92,6 @@ module.exports = {
   getHomePageProducts,
   getProductsWithFilters,
   getProductById,
+  incrementProductView,
   getRelatedProducts,
 };

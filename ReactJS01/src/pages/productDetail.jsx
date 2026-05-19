@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Spin, InputNumber, notification, Tag } from "antd";
 import {
@@ -33,8 +33,12 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [thumbsSwiper, setThumbsSwiper] = useState(null); // Swiper thumbnail
+  const viewCounted = useRef(false);
 
   useEffect(() => {
+    // Reset flag khi chuyển sang sản phẩm khác
+    viewCounted.current = false;
+
     const fetchProduct = async () => {
       setIsLoading(true);
       setThumbsSwiper(null); // Reset thumbnail khi chuyển sản phẩm
@@ -56,6 +60,19 @@ export default function ProductDetailPage() {
           setProduct(prod);
           setSimilarProducts(related);
           setQuantity(1);
+
+          // Tăng view đúng 1 lần - kiểm tra flag trước khi gọi
+          if (!viewCounted.current) {
+            viewCounted.current = true;
+            try {
+              const resView = await axios.patch(`/v1/api/products/${id}/view`);
+              if (resView?.views !== undefined) {
+                setProduct((prev) => ({ ...prev, views: resView.views }));
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }
         } else {
           setProduct(null);
         }
@@ -138,7 +155,7 @@ export default function ProductDetailPage() {
           </Link>
           <span className="text-gray-300">›</span>
           <Link
-            to={`/search?category=${product.categoryId}`}
+            to={`/search?category=${product.category}`}
             className="hover:text-orange-500 transition-colors"
           >
             {product.categoryName}

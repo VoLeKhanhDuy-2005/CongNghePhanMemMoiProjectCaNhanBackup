@@ -54,8 +54,23 @@ const getProductDetail = async (req, res) => {
   }
 };
 
+const incrementView = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updated = await productService.incrementProductView(id);
+    // Trả về views mới để frontend cập nhật UI ngay, không cần GET lại
+    res.status(200).json({ success: true, views: updated.views });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Tăng lượt xem thất bại: " + error.message,
+    });
+  }
+};
+
 module.exports = {
   searchProducts,
   getHomePageProducts,
   getProductDetail,
+  incrementView,
 };
