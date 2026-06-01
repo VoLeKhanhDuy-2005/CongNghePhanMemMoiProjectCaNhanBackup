@@ -42,7 +42,7 @@ instance.interceptors.response.use(
         const res = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/v1/api/refresh-token`,
           {},
-          { withCredentials: true }
+          { withCredentials: true }// Cho phép client gửi kèm cookie
         );
         
         if (res.data && res.data.access_token) {

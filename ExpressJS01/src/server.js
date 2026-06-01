@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const Order = require("./models/order");
 const app = express(); //cấu hình app là express
 const port = process.env.PORT || 8888;
-app.use(cors({ origin: true, credentials: true })); //config cors cho phép gửi cookie
+app.use(cors({ origin: "http://localhost:5173", credentials: true })); //config cors cho phép gửi cookie
 app.use(cookieParser()); //config req.cookies
 app.use(express.json()); // //config req.body cho json
 app.use(express.urlencoded({ extended: true })); // for form data

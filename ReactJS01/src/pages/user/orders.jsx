@@ -132,8 +132,9 @@ export default function OrdersPage() {
   // Bộ đếm ngược thời gian hủy đơn (30 phút)
   useEffect(() => {
     if (!selectedOrder || selectedOrder.status === "Cancelled" || selectedOrder.status === "Delivered" || selectedOrder.status === "Shipping") {
-      setCanCancel(false);
-      setTimeLeftStr("");
+      // Kiểm tra xem đơn hàng có thể hủy được không
+      setCanCancel(false);// không cho phép hủy
+      setTimeLeftStr("");// xóa hiển thị đếm ngược thời gian
       return;
     }
 

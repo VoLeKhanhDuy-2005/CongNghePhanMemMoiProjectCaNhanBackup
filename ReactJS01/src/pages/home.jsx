@@ -59,6 +59,18 @@ export default function Home() {
     };
     fetchData();
   }, []);
+  // Mảng [] ở cuối useEffect là dependency array -> kiểm soát khi nào effect sẽ chạy lại
+  // useEffect(() => {}): hạy sau mỗi lần render
+  // useEffect(() => {}, []): Chỉ chạy 1 lần duy nhất khi component mount
+  // useEffect(() => {}, [count]): Chạy lại mỗi khi count thay đổi
+  // useEffect(() => {}, [a, b]): Chạy lại khi a hoặc b thay đổi
+  // Nếu không có [] -> mỗi lần render lại sẽ gọi API lại -> vòng lặp vô tận 
+  // vì setProducts trigger render -> render trigger fetchData -> lại setProducts...
+
+  // Vòng đời của một component:
+  // 1. Mount -> component xuất hiện lần đầu trên màn hình
+  // 2. Update -> component re-render khi state/props thay đổi
+  // 3. Unmount -> component bị xóa khỏi màn hình
 
   const formatPrice = (price) =>
     new Intl.NumberFormat("vi-VN", {
