@@ -36,7 +36,7 @@ const {
 } = require("../controllers/orderController");
 const auth = require("../middleware/auth");
 const isAdmin=require("../middleware/isAdmin")
-const { validateAvatar } = require("../middleware/fileValidate.middleware");
+const { validateAvatar } = require("../middleware/fileValidate");
 
 const routerAPI = express.Router();
 

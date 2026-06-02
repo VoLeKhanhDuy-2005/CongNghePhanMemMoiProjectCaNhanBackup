@@ -31,8 +31,8 @@ export default function CartPage() {
   // Form thông tin giao hàng
   const [deliveryInfo, setDeliveryInfo] = useState({
     customerName: auth?.user?.name || "",
-    phoneNumber: "",
-    shippingAddress: "",
+    phoneNumber: auth?.user?.phone || "",
+    shippingAddress: auth?.user?.address || "",
   });
 
   const [paymentMethod, setPaymentMethod] = useState("COD"); // 'COD' hoặc 'MOMO'

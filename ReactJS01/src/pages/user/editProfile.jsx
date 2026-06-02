@@ -145,6 +145,8 @@ export default function EditProfilePage() {
           user: {
             ...auth.user,
             name: formData.fullname,
+            phone: formData.phone,
+            address: formData.address,
             avatar: res.data?.avatarURL || auth.user.avatar
           }
         });

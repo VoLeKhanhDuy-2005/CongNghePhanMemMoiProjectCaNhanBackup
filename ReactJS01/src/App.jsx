@@ -20,6 +20,8 @@ function App() {
             name: res.user.name,
             role: res.user.role,
             avatar: res.user.avatarURL,
+            phone: res.user.phone,
+            address: res.user.address,
           },
         });
 
