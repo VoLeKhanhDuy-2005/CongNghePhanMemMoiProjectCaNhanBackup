@@ -35,7 +35,7 @@ const {
   timeTravelOrder,
 } = require("../controllers/orderController");
 const auth = require("../middleware/auth");
-const isAdmin=require("../middleware/isAdmin")
+const isAdmin = require("../middleware/isAdmin");
 const { validateAvatar } = require("../middleware/fileValidate");
 
 const routerAPI = express.Router();
@@ -75,7 +75,10 @@ routerAPI.post("/orders/:id/verify-momo", verifyMomoPayment);
 
 routerAPI.get("/admin/orders", isAdmin, getShopOrders);
 routerAPI.patch("/admin/orders/:id", isAdmin, updateShopOrderStatus);
-routerAPI.post("/admin/orders/:id/cancel-request", isAdmin, handleShopCancelRequest);
+routerAPI.post(
+  "/admin/orders/:id/cancel-request",
+  isAdmin,
+  handleShopCancelRequest,
+);
 
 module.exports = routerAPI;
-

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Input, Spin, Empty, Radio, Divider, Pagination } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
@@ -37,8 +37,9 @@ export default function SearchFilterPage() {
       default:
         return state;
     }
-    const [filters, dispatch] = useReducer(filterReducer, initialFilters);
   };
+  const [filters, dispatch] = useReducer(filterReducer, initialFilters);
+  const { query, category, priceRange, currentPage } = filters;
 
   // Gọi tìm kiếm mỗi khi bộ lọc thay đổi
   useEffect(() => {

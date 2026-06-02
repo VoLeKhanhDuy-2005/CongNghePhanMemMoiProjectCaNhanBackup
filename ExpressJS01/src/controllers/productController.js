@@ -1,6 +1,6 @@
 const productService = require("../services/productService");
 
-const searchProducts = async (req, res) => {
+const searchProducts = async (req, res, next) => {
   try {
     const data = await productService.getProductsWithFilters(req.query);
     res.status(200).json({
@@ -8,14 +8,11 @@ const searchProducts = async (req, res) => {
       data: data,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Tìm kiếm thất bại: " + error.message,
-    });
+    next(error);
   }
 };
 
-const getHomePageProducts = async (req, res) => {
+const getHomePageProducts = async (req, res, next) => {
   try {
     const data = await productService.getHomePageProducts();
     res.status(200).json({
@@ -23,14 +20,11 @@ const getHomePageProducts = async (req, res) => {
       data: data,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Lấy trang chủ thất bại" + error.message,
-    });
+    next(error);
   }
 };
 
-const getProductDetail = async (req, res) => {
+const getProductDetail = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await productService.getProductById(id);
@@ -47,24 +41,18 @@ const getProductDetail = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(404).json({
-      success: false,
-      message: "Lấy thông tin chi tiết sản phẩm thất bại: " + error.message,
-    });
+    next(error);
   }
 };
 
-const incrementView = async (req, res) => {
+const incrementView = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updated = await productService.incrementProductView(id);
     // Trả về views mới để frontend cập nhật UI ngay, không cần GET lại
     res.status(200).json({ success: true, views: updated.views });
   } catch (error) {
-    res.status(404).json({
-      success: false,
-      message: "Tăng lượt xem thất bại: " + error.message,
-    });
+    next(error);
   }
 };
 

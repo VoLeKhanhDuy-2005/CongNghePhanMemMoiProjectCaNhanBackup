@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./components/layout/header";
 import { getCurrentUserApi, getCartApi } from "./util/api";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./components/context/auth.context";
 import { Spin } from "antd";
 

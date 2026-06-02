@@ -157,7 +157,7 @@ export default function Home() {
                 slidesPerView={1.2}
                 navigation
                 pagination={{ clickable: true }}
-                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                autoplay={{ delay: 3000}}
                 breakpoints={{
                   640: { slidesPerView: 2.2 },
                   1024: { slidesPerView: 2.5 },

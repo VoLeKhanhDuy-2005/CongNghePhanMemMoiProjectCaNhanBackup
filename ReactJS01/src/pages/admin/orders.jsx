@@ -240,7 +240,7 @@ export default function AdminOrdersPage() {
                 </div>
               )}
 
-              {ord.status !== "Cancelled" && ord.status !== "Delivered" && (
+              {ord.status !== "Cancelled" && ord.status !== "Delivered" && ord.status !== "Shipping" && (
                 <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100/70 space-y-2">
                   <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1">
                     <ShoppingOutlined /> Thao tác xử lý quy trình vận đơn

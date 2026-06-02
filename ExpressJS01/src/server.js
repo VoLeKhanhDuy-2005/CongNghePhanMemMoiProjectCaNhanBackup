@@ -5,6 +5,7 @@ const apiRoutes = require("./routes/api");
 const connection = require("./config/database");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const errorHandler = require("./middleware/errorHandler");
 const Order = require("./models/order");
 const app = express(); //cấu hình app là express
 const port = process.env.PORT || 8888;
@@ -20,6 +21,7 @@ const webAPI = express.Router();
 app.use("/", webAPI);
 //khai báo route cho API
 app.use("/v1/api/", apiRoutes);
+app.use(errorHandler);
 (async () => {
   try {
     await connection();
